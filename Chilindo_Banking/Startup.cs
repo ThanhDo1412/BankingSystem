@@ -1,4 +1,6 @@
-﻿using Chilindo_Database;
+﻿using Chilindo_Banking.Midleware;
+using Chilindo_Data.UnitOfWork;
+using Chilindo_Database;
 using ChilinDo_Service;
 using ChilinDo_Service.Interface;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +31,7 @@ namespace Chilindo_Banking
                 (options => options.UseSqlServer(connection));
 
             services.AddScoped<ITransactionService, TransactionService>();
+            services.AddSingleton<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +48,8 @@ namespace Chilindo_Banking
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
         }
     }
 }
