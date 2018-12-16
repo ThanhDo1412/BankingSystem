@@ -1,0 +1,13 @@
+packages/*
+*/obj/*
+Debug/
+Application/
+*/Debug/*
+*.suo
+*/Release/*
+Release/
+*.user
+Application - Copy/
+*.orig
+/.vs
+*.scgdat
