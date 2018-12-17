@@ -9,7 +9,7 @@ namespace Chilindo_Data.Data
     {
         [Display(Name = "Internal Server Error")]
         E0,
-        [Display(Name = "Bucket {0} is not exist")]
+        [Display(Name = "The Balance is not enough for withdrawal")]
         E1,
     }
 }

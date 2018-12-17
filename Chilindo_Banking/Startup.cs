@@ -31,7 +31,9 @@ namespace Chilindo_Banking
                 (options => options.UseSqlServer(connection));
 
             services.AddScoped<ITransactionService, TransactionService>();
-            services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            //services.AddSingleton(typeof(IRepository<>), typeof(Repository<>));
+            services.AddSingleton<ICommonService, CommonService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +50,13 @@ namespace Chilindo_Banking
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-Xss-Protection", "1");
+                await next();
+            });
+
 
             app.UseMiddleware<ExceptionHandlerMiddleware>();
         }

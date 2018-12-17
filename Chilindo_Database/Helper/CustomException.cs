@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 using Chilindo_Data.Data;
 using Chilindo_Data.Helper;
 
-namespace Chilindo_Banking.Midleware
+namespace Chilindo_Data.Midleware
 {
-    public class CustomError : Exception
+    public class CustomException : Exception
     {
         public string ErrorCode { get; }
         public string ErrorMessage { get; }
         public int AccountNumber { get; }
 
-        public CustomError(ErrorCode error, int accountNumber)
+        public CustomException(ErrorCode error, int accountNumber)
         {
             ErrorCode = error.ToString();
             ErrorMessage = error.GetDisplayAttribute().Name;

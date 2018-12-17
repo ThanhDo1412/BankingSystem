@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Chilindo_Data.Helper;
+﻿using Chilindo_Data.Helper;
+using Chilindo_Data.Midleware;
 using Chilindo_Database.ViewModel;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Globalization;
+using System.Threading.Tasks;
+using Chilindo_Database.Entity;
 
 namespace Chilindo_Banking.Midleware
 {
@@ -40,12 +40,17 @@ namespace Chilindo_Banking.Midleware
             switch (exception)
             {
                 //Custom error showing to user
-                case CustomError e:
+                case CustomException e:
                     respone.Message = e.ErrorMessage;
                     respone.AccountNumber = e.AccountNumber;
                     break;
                 //Exception by system
                 default:
+                    if (context.Request.Method == "GET")
+                    {
+                        
+                    }
+                    
                     break;
             }
             context.Response.ContentType = "application/json";

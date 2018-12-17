@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 namespace Chilindo_Banking.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
     public class AccountController : Controller
     {
         private readonly ITransactionService _transactionService;
@@ -16,22 +15,22 @@ namespace Chilindo_Banking.Controllers
             _transactionService = transactionService;
         }
 
-        [HttpGet("balance/{id}")]
+        [HttpGet("balance/{accountNumber}")]
         public async Task<ActionResult> GetBalance(int accountNumber)
         {
-            return Json(new TransactionBaseResponse());
+            return Json(await _transactionService.GetBalance(accountNumber));
         }
 
         [HttpPost("deposit")]
-        public async Task<ActionResult> Deposit([FromBody] string value)
+        public async Task<ActionResult> Deposit([FromBody] TransactionBaseRequest request)
         {
-            return Json(Ok());
+            return Json(await _transactionService.Deposit(request));
         }
 
         [HttpPost("withdraw")]
-        public async Task<ActionResult> Withdraw([FromBody] string value)
+        public async Task<ActionResult> Withdraw([FromBody] TransactionBaseRequest request)
         {
-            return Json(Ok());
+            return Json(await _transactionService.Withdraw(request));
         }
     }
 }
