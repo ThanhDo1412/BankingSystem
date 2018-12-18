@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Chilindo_Data.UnitOfWork;
 using Chilindo_Database.Entity;
+using Chilindo_Database.ViewModel;
 using ChilinDo_Service.Interface;
 
 namespace ChilinDo_Service
@@ -17,9 +18,17 @@ namespace ChilinDo_Service
             _uow = uow;
         }
 
-        public async Task InsertTransactionHistory(TransactionHistory model)
+        public async Task InsertTransactionHistory(TransactionBaseResponse model)
         {
-            _uow.TransactionHistoryRepo.Create(model);
+            var transactionHistory = new TransactionHistory
+            {
+                AccountId = model.AccountNumber,
+                Amount = model.Balance,
+                Currency = model.Currency,
+                IsSuccess = model.Successful,
+                Message = model.Message
+            };
+            _uow.TransactionHistoryRepo.Create(transactionHistory);
             await _uow.SaveAsyn();
         }
     }

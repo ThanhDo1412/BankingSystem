@@ -1,11 +1,12 @@
 ﻿using Chilindo_Data.Helper;
-using Chilindo_Data.Midleware;
 using Chilindo_Database.ViewModel;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using Chilindo_Data.Data;
 using Chilindo_Database.Entity;
+using ChilinDo_Service.Interface;
 
 namespace Chilindo_Banking.Midleware
 {
@@ -18,7 +19,7 @@ namespace Chilindo_Banking.Midleware
             _next = next;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, ICommonService commonService)
         {
             try
             {
@@ -26,11 +27,11 @@ namespace Chilindo_Banking.Midleware
             }
             catch (Exception exception)
             {
-                await HandleExceptionAsync(context, exception);
+                await HandleExceptionAsync(context, exception, commonService);
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private Task HandleExceptionAsync(HttpContext context, Exception exception, ICommonService commonService)
         {
             var respone = new TransactionBaseResponse
             {
@@ -43,14 +44,17 @@ namespace Chilindo_Banking.Midleware
                 case CustomException e:
                     respone.Message = e.ErrorMessage;
                     respone.AccountNumber = e.AccountNumber;
+                    commonService.InsertTransactionHistory(respone);
                     break;
                 //Exception by system
                 default:
-                    if (context.Request.Method == "GET")
-                    {
-                        
-                    }
-                    
+                    var accountNumber = context.Session.GetInt32("AccountNumber");
+                    respone.AccountNumber = accountNumber ?? 0;
+                    respone.Message = exception.Message;
+                    commonService.InsertTransactionHistory(respone);
+
+                    //Update message show to end user
+                    respone.Message = ErrorCode.E1.GetDisplayAttribute().Name;
                     break;
             }
             context.Response.ContentType = "application/json";

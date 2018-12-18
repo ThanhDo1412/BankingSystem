@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Chilindo_Testing
 {
     [TestClass]
-    public class UnitTest1
+    public class CheckBalanceTest
     {
         [TestMethod]
         public void TestMethod1()

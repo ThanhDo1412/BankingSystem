@@ -1,10 +1,12 @@
-﻿using Chilindo_Data.Data;
-using Chilindo_Data.Midleware;
+﻿using System;
+using Chilindo_Data.Data;
+using Chilindo_Data.Helper;
 using Chilindo_Data.UnitOfWork;
 using Chilindo_Database.Entity;
 using Chilindo_Database.ViewModel;
 using ChilinDo_Service.Interface;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -56,7 +58,15 @@ namespace ChilinDo_Service
             }
 
             InsertTransaction(request);
-            await _uow.SaveAsyn();
+
+            try
+            {
+                await _uow.SaveAsyn();
+            }
+            catch (DBConcurrencyException)
+            {
+                throw new CustomException(ErrorCode.E2, request.AccountNumber);
+            }
 
             return new TransactionBaseResponse
             {
@@ -96,7 +106,15 @@ namespace ChilinDo_Service
             }
 
             InsertTransaction(request);
-            await _uow.SaveAsyn();
+
+            try
+            {
+                await _uow.SaveAsyn();
+            }
+            catch (DBConcurrencyException)
+            {
+                throw new CustomException(ErrorCode.E2, request.AccountNumber);
+            }
 
             return new TransactionBaseResponse
             {

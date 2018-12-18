@@ -12,6 +12,9 @@ namespace Chilindo_Database.Entity
         public string Currency { get; set; }
         public decimal Balance { get; set; }
         public bool IsDeleted { get; set; }
+        [ConcurrencyCheck]
+        [Timestamp]
+        public byte[] Version { get; set; }
 
         [ForeignKey("AcountInfoId")]
         public AccountInfo AccountInfo { get; set; }

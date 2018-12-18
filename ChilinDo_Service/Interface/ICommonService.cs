@@ -1,10 +1,10 @@
-﻿using Chilindo_Database.Entity;
+﻿using Chilindo_Database.ViewModel;
 using System.Threading.Tasks;
 
 namespace ChilinDo_Service.Interface
 {
     public interface ICommonService
     {
-        Task InsertTransactionHistory(TransactionHistory model);
+        Task InsertTransactionHistory(TransactionBaseResponse model);
     }
 }

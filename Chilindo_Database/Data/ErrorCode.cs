@@ -11,5 +11,7 @@ namespace Chilindo_Data.Data
         E0,
         [Display(Name = "The Balance is not enough for withdrawal")]
         E1,
+        [Display(Name = "This balance is changed, please proccess again")]
+        E2,
     }
 }

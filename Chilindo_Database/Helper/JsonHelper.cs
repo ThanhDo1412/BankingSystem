@@ -11,13 +11,13 @@ namespace Chilindo_Data.Helper
                 return null;
             }
 
-            var settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                DefaultValueHandling = DefaultValueHandling.Ignore
-            };
+            //var settings = new JsonSerializerSettings
+            //{
+            //    NullValueHandling = NullValueHandling.Ignore,
+            //    DefaultValueHandling = DefaultValueHandling.Ignore
+            //};
 
-            return JsonConvert.SerializeObject(obj, settings);
+            return JsonConvert.SerializeObject(obj);
         }
 
         public static T JsonDeserialize<T>(this string json)
