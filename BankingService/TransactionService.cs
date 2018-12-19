@@ -1,4 +1,5 @@
-﻿using BankingData.Data;
+﻿using System;
+using BankingData.Data;
 using BankingData.Entity;
 using BankingData.Helper;
 using BankingData.UnitOfWork;
@@ -32,8 +33,7 @@ namespace BankingService
 
         public async Task<TransactionBaseResponse> Deposit(TransactionBaseRequest request)
         {
-            //make sure amount is positive
-
+            request.Validate();
 
             //Check account valid
             var account = (await _uow.AccountInfoRepo.FindByConditionAsync(x => x.Id == request.AccountNumber && !x.IsDeleted)).FirstOrDefault();
@@ -79,8 +79,7 @@ namespace BankingService
 
         public async Task<TransactionBaseResponse> Withdraw(TransactionBaseRequest request)
         {
-            //make sure amount is positive
-
+            request.Validate();
 
             //Check account valid
             var account = (await _uow.AccountInfoRepo.FindByConditionAsync(x => x.Id == request.AccountNumber && !x.IsDeleted)).FirstOrDefault();

@@ -10,39 +10,30 @@ namespace BankingApi
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Run();
-
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true)
+                .AddJsonFile("/configmaps/appsettings.json", optional: true)
                 .Build();
 
             var loggerConfiguration = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)
-                .Enrich.FromLogContext();
+                .ReadFrom.Configuration(configuration);
 
             Log.Logger = loggerConfiguration.CreateLogger();
+
+            BuildWebHost(args).Run();
         }
 
-        //public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-        //    WebHost.CreateDefaultBuilder(args)
-        //        .UseStartup<Startup>();
-
-        public static IWebHost CreateWebHostBuilder(string[] args)
+        public static IWebHost BuildWebHost(string[] args)
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("hosting.json", true)
+                .AddJsonFile("appsettings.json", true)
                 .Build();
 
             return WebHost.CreateDefaultBuilder(args)
-                .UseConfiguration(config)
-                .ConfigureAppConfiguration((hostBuilder, builder) =>
-                {
-                    builder.AddJsonFile("appsettings.json", optional: true);
-                    builder.AddEnvironmentVariables();
-                })
                 .UseStartup<Startup>()
+                .UseConfiguration(config)
                 .UseSerilog()
                 .Build();
         }

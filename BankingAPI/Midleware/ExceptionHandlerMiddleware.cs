@@ -7,6 +7,7 @@ using BankingService.Interface;
 using BankingService.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace BankingApi.Middleware
 {
@@ -56,6 +57,7 @@ namespace BankingApi.Middleware
                     accountNumber = context.Session.GetInt32("AccountNumber") ?? 0;
                     response.AccountNumber = accountNumber;
                     response.Message = ErrorCode.E0.GetDisplayAttribute().Name;
+                    Log.Error(exception, string.Empty, accountNumber);
                     break;
             }
 

@@ -16,6 +16,10 @@ namespace BankingData.Data
         [Display(Name = "Account number does not existed")]
         E3,
         [Display(Name = "This account doesn't have this currency. Please try with another currency")]
-        E4
+        E4,
+        [Display(Name = "Account Number can not be negative")]
+        E5,
+        [Display(Name = "Amount can not be negative")]
+        E6
     }
 }

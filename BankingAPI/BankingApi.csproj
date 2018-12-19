@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Chilindo_Database\BankingData.csproj" />
-    <ProjectReference Include="..\ChilinDo_Service\BankingService.csproj" />
+    <ProjectReference Include="..\BankingData\BankingData.csproj" />
+    <ProjectReference Include="..\BankingService\BankingService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
