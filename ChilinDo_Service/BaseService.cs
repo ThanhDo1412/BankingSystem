@@ -1,12 +1,12 @@
-﻿using Chilindo_Data.UnitOfWork;
+﻿using BankingData.UnitOfWork;
 
-namespace ChilinDo_Service
+namespace BankingService
 {
     public class BaseService
     {
-        private readonly IUnitOfWork _uow;
+        protected readonly IUnitOfWork _uow;
 
-        public BaseService(IUnitOfWork uow)
+        protected BaseService(IUnitOfWork uow)
         {
             _uow = uow;
         }

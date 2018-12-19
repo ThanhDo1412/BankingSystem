@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Chilindo_Data.Data
+namespace BankingData.Data
 {
     public enum ErrorCode
     {
@@ -13,5 +13,9 @@ namespace Chilindo_Data.Data
         E1,
         [Display(Name = "This balance is changed, please proccess again")]
         E2,
+        [Display(Name = "Account number does not existed")]
+        E3,
+        [Display(Name = "This account doesn't have this currency. Please try with another currency")]
+        E4
     }
 }

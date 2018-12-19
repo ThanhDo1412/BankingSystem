@@ -1,4 +1,4 @@
-﻿using Chilindo_Database;
+﻿using BankingDatabase;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,11 +6,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Chilindo_Data.UnitOfWork
+namespace BankingData.UnitOfWork
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        protected ChilinDoContext ChilinDoContext { get; set; }
+        private ChilinDoContext ChilinDoContext { get; set; }
 
         public Repository(ChilinDoContext chilinDoContext)
         {
@@ -22,12 +22,12 @@ namespace Chilindo_Data.UnitOfWork
             return await this.ChilinDoContext.Set<T>().ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> FindByConditionAync(Expression<Func<T, bool>> expression)
+        public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression)
         {
             return await this.ChilinDoContext.Set<T>().Where(expression).ToListAsync();
         }
 
-        public async Task<T> FindByIdAync(int id)
+        public async Task<T> FindByIdAsync(int id)
         {
             return await this.ChilinDoContext.Set<T>().FindAsync(id);
         }

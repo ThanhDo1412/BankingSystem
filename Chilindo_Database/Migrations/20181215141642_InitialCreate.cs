@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Chilindo_Database.Migrations
+namespace BankingDatabase.Migrations
 {
     public partial class InitialCreate : Migration
     {

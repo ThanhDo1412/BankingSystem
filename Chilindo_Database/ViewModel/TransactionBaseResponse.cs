@@ -1,4 +1,4 @@
-﻿namespace Chilindo_Database.ViewModel
+﻿namespace BankingDatabase.ViewModel
 {
     public class TransactionBaseResponse
     {

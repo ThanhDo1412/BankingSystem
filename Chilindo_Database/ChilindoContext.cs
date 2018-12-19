@@ -1,8 +1,8 @@
 ﻿using System;
-using Chilindo_Database.Entity;
+using BankingDatabase.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace Chilindo_Database
+namespace BankingDatabase
 {
     public class ChilinDoContext : DbContext
     {

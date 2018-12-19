@@ -1,8 +1,8 @@
-﻿using Chilindo_Database;
-using Chilindo_Database.Entity;
+﻿using BankingDatabase;
+using BankingDatabase.Entity;
 using System.Threading.Tasks;
 
-namespace Chilindo_Data.UnitOfWork
+namespace BankingData.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {

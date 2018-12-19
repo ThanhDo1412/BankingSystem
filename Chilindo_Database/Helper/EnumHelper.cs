@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 
-namespace Chilindo_Data.Helper
+namespace BankingData.Helper
 {
     public static class EnumHelper
     {

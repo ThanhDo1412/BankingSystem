@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Chilindo_Data.Data
+namespace BankingData.Data
 {
     public static class Contanst
     {

@@ -1,17 +1,17 @@
-﻿using Chilindo_Banking.Midleware;
-using Chilindo_Data.UnitOfWork;
-using Chilindo_Database;
-using ChilinDo_Service;
-using ChilinDo_Service.Interface;
+﻿using System;
+using BankingApi.Middleware;
+using BankingData.UnitOfWork;
+using BankingDatabase;
+using BankingService;
+using BankingService.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
-namespace Chilindo_Banking
+namespace BankingApi
 {
     public class Startup
     {
@@ -31,7 +31,6 @@ namespace Chilindo_Banking
 
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<ICommonService, CommonService>();
 
             services.AddDistributedMemoryCache();
 

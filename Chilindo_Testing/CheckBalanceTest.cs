@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Chilindo_Testing
+namespace BankingTest
 {
     [TestClass]
     public class CheckBalanceTest

@@ -1,14 +1,14 @@
-﻿using Chilindo_Data.Helper;
-using Chilindo_Database.ViewModel;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Globalization;
+﻿using System;
+using System.Data;
 using System.Threading.Tasks;
-using Chilindo_Data.Data;
-using Chilindo_Database.Entity;
-using ChilinDo_Service.Interface;
+using BankingData.Data;
+using BankingData.Helper;
+using BankingDatabase.ViewModel;
+using BankingService.Interface;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
-namespace Chilindo_Banking.Midleware
+namespace BankingApi.Middleware
 {
     public class ExceptionHandlerMiddleware
     {
@@ -19,7 +19,7 @@ namespace Chilindo_Banking.Midleware
             _next = next;
         }
 
-        public async Task Invoke(HttpContext context, ICommonService commonService)
+        public async Task Invoke(HttpContext context, ITransactionService transactionService)
         {
             try
             {
@@ -27,16 +27,17 @@ namespace Chilindo_Banking.Midleware
             }
             catch (Exception exception)
             {
-                await HandleExceptionAsync(context, exception, commonService);
+                await HandleExceptionAsync(context, exception, transactionService);
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception exception, ICommonService commonService)
+        private Task HandleExceptionAsync(HttpContext context, Exception exception, ITransactionService transactionService)
         {
             var respone = new TransactionBaseResponse
             {
                 Successful = false
             };
+            var accountNumber = 0;
 
             switch (exception)
             {
@@ -44,22 +45,24 @@ namespace Chilindo_Banking.Midleware
                 case CustomException e:
                     respone.Message = e.ErrorMessage;
                     respone.AccountNumber = e.AccountNumber;
-                    commonService.InsertTransactionHistory(respone);
+                    break;
+                case DBConcurrencyException e:
+                    accountNumber = context.Session.GetInt32("AccountNumber") ?? 0;
+                    respone.AccountNumber = accountNumber;
+                    respone.Message = ErrorCode.E2.GetDisplayAttribute().Name;
                     break;
                 //Exception by system
                 default:
-                    var accountNumber = context.Session.GetInt32("AccountNumber");
-                    respone.AccountNumber = accountNumber ?? 0;
-                    respone.Message = exception.Message;
-                    commonService.InsertTransactionHistory(respone);
-
-                    //Update message show to end user
+                    accountNumber = context.Session.GetInt32("AccountNumber") ?? 0;
+                    respone.AccountNumber = accountNumber;
                     respone.Message = ErrorCode.E1.GetDisplayAttribute().Name;
                     break;
             }
+
+            transactionService.InsertTransaction(respone);
             context.Response.ContentType = "application/json";
 
-            return context.Response.WriteAsync(respone.JsonSerialize());
+            return context.Response.WriteAsync(JsonConvert.SerializeObject(respone));
         }
     }
 }

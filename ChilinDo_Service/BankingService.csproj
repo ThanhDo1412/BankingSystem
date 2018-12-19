@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Chilindo_Database\Chilindo_Data.csproj" />
+    <ProjectReference Include="..\Chilindo_Database\BankingData.csproj" />
   </ItemGroup>
 
 </Project>

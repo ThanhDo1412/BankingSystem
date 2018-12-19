@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Chilindo_Data.Data;
-using Chilindo_Data.Helper;
+using BankingData.Data;
+using BankingData.Helper;
 
-namespace Chilindo_Data.Helper
+namespace BankingData.Helper
 {
     public class CustomException : Exception
     {

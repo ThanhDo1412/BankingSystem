@@ -1,30 +1,27 @@
 ﻿using System;
-using Chilindo_Data.Data;
-using Chilindo_Data.Helper;
-using Chilindo_Data.UnitOfWork;
-using Chilindo_Database.Entity;
-using Chilindo_Database.ViewModel;
-using ChilinDo_Service.Interface;
+using BankingData.Data;
+using BankingData.Helper;
+using BankingData.UnitOfWork;
+using BankingDatabase.Entity;
+using BankingDatabase.ViewModel;
+using BankingService.Interface;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace ChilinDo_Service
+namespace BankingService
 {
     public class TransactionService : BaseService, ITransactionService
     {
-        private readonly IUnitOfWork _uow;
-
         public TransactionService(IUnitOfWork uow) : base(uow)
         {
-            _uow = uow;
         }
 
         public async Task<ICollection<TransactionBaseResponse>> GetBalance(int accountNumber)
         {
-            return (await _uow.AccountDetailRepo.FindByConditionAync(x => x.AcountInfoId == accountNumber))
+            return (await _uow.AccountDetailRepo.FindByConditionAsync(x => x.AcountInfoId == accountNumber && !x.IsDeleted))
                 .Select(x => new TransactionBaseResponse
                 {
                     AccountNumber = accountNumber,
@@ -37,12 +34,25 @@ namespace ChilinDo_Service
 
         public async Task<TransactionBaseResponse> Deposit(TransactionBaseRequest request)
         {
-            var accountDetail = (await _uow.AccountDetailRepo.FindByConditionAync(x => x.AcountInfoId == request.AccountNumber && x.Currency == request.Currency)).FirstOrDefault();
+            //Check account valid
+            var account = (await _uow.AccountInfoRepo.FindByConditionAsync(x => x.Id == request.AccountNumber && !x.IsDeleted)).FirstOrDefault();
+
+            if (account == null)
+            {
+                throw new CustomException(ErrorCode.E3, request.AccountNumber);
+            }
+
+            var accountDetail = (await _uow.AccountDetailRepo.FindByConditionAsync(x => x.AcountInfoId == request.AccountNumber && x.Currency == request.Currency && !x.IsDeleted)).FirstOrDefault();
 
             //Check account existed with this currency
             if (accountDetail != null)
             {
-                accountDetail =  new AccountDetail
+                accountDetail.Balance += request.Amount;
+                _uow.AccountDetailRepo.Update(accountDetail);
+            }
+            else
+            {
+                accountDetail = new AccountDetail
                 {
                     AcountInfoId = request.AccountNumber,
                     Balance = request.Amount,
@@ -51,22 +61,10 @@ namespace ChilinDo_Service
                 };
                 _uow.AccountDetailRepo.Create(accountDetail);
             }
-            else
-            {
-                accountDetail.Balance += request.Amount;
-                _uow.AccountDetailRepo.Update(accountDetail);
-            }
 
             InsertTransaction(request);
 
-            try
-            {
-                await _uow.SaveAsyn();
-            }
-            catch (DBConcurrencyException)
-            {
-                throw new CustomException(ErrorCode.E2, request.AccountNumber);
-            }
+            await _uow.SaveAsyn();
 
             return new TransactionBaseResponse
             {
@@ -80,41 +78,33 @@ namespace ChilinDo_Service
 
         public async Task<TransactionBaseResponse> Withdraw(TransactionBaseRequest request)
         {
-            var accountDetail = (await _uow.AccountDetailRepo.FindByConditionAync(x => x.AcountInfoId == request.AccountNumber && x.Currency == request.Currency)).FirstOrDefault();
+            //Check account valid
+            var account = (await _uow.AccountInfoRepo.FindByConditionAsync(x => x.Id == request.AccountNumber && !x.IsDeleted)).FirstOrDefault();
+
+            if (account == null)
+            {
+                throw new CustomException(ErrorCode.E3, request.AccountNumber);
+            }
+
+            var accountDetail = (await _uow.AccountDetailRepo.FindByConditionAsync(x => x.AcountInfoId == request.AccountNumber && x.Currency == request.Currency && !x.IsDeleted)).FirstOrDefault();
+            
+            //Check account existed with this currency
+            if (accountDetail == null)
+            {
+                throw new CustomException(ErrorCode.E4, request.AccountNumber);
+            }
 
             if (request.Amount > accountDetail.Balance)
             {
                 throw new CustomException(ErrorCode.E1, request.AccountNumber);
             }
 
-            //Check account existed with this currency
-            if (accountDetail != null)
-            {
-                accountDetail = new AccountDetail
-                {
-                    AcountInfoId = request.AccountNumber,
-                    Balance = request.Amount,
-                    Currency = request.Currency,
-                    IsDeleted = false
-                };
-                _uow.AccountDetailRepo.Create(accountDetail);
-            }
-            else
-            {
-                accountDetail.Balance -= request.Amount;
-                _uow.AccountDetailRepo.Update(accountDetail);
-            }
+            accountDetail.Balance -= request.Amount;
+            _uow.AccountDetailRepo.Update(accountDetail);
 
             InsertTransaction(request);
 
-            try
-            {
-                await _uow.SaveAsyn();
-            }
-            catch (DBConcurrencyException)
-            {
-                throw new CustomException(ErrorCode.E2, request.AccountNumber);
-            }
+            await _uow.SaveAsyn();
 
             return new TransactionBaseResponse
             {
@@ -136,6 +126,20 @@ namespace ChilinDo_Service
                 IsSuccess = true
             };
             _uow.TransactionHistoryRepo.Create(transaction);
+        }
+
+        public async Task InsertTransaction(TransactionBaseResponse model)
+        {
+            var transactionHistory = new TransactionHistory
+            {
+                AccountId = model.AccountNumber,
+                Amount = model.Balance,
+                Currency = model.Currency,
+                IsSuccess = model.Successful,
+                Message = model.Message
+            };
+            _uow.TransactionHistoryRepo.Create(transactionHistory);
+            await _uow.SaveAsyn();
         }
     }
 }

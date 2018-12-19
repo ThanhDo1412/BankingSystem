@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Chilindo_Database.Migrations
+namespace BankingDatabase.Migrations
 {
     public partial class AddConcurrencyForAccountDetail : Migration
     {

@@ -1,8 +1,8 @@
-﻿using Chilindo_Database.ViewModel;
+﻿using BankingDatabase.ViewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ChilinDo_Service.Interface
+namespace BankingService.Interface
 {
     public interface ITransactionService
     {
@@ -10,5 +10,6 @@ namespace ChilinDo_Service.Interface
         Task<TransactionBaseResponse> Deposit(TransactionBaseRequest request);
         Task<TransactionBaseResponse> Withdraw(TransactionBaseRequest request);
         void InsertTransaction(TransactionBaseRequest request);
+        Task InsertTransaction(TransactionBaseResponse model);
     }
 }

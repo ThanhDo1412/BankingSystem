@@ -1,7 +1,7 @@
-﻿using Chilindo_Database.Entity;
+﻿using BankingDatabase.Entity;
 using System.Threading.Tasks;
 
-namespace Chilindo_Data.UnitOfWork
+namespace BankingData.UnitOfWork
 {
     public interface IUnitOfWork
     {

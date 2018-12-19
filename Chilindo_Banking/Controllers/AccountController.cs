@@ -1,13 +1,13 @@
 ﻿using System;
-using Chilindo_Database.ViewModel;
-using ChilinDo_Service.Interface;
+using BankingDatabase.ViewModel;
+using BankingService.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Chilindo_Data.Data;
-using Chilindo_Data.Helper;
+using BankingData.Data;
+using BankingData.Helper;
 using Microsoft.AspNetCore.Http;
 
-namespace Chilindo_Banking.Controllers
+namespace BankingApi.Controllers
 {
     [Route("api/[controller]")]
     public class AccountController : Controller
