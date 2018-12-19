@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BankingDatabase.Migrations
+namespace BankingData.Migrations
 {
     public partial class AddConcurrencyForAccountDetail : Migration
     {

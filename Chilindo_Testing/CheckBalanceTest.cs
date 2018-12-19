@@ -8,6 +8,7 @@ namespace BankingTest
         [TestMethod]
         public void TestMethod1()
         {
+
         }
     }
 }

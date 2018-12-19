@@ -1,8 +1,7 @@
-﻿using System;
-using BankingDatabase.Entity;
+﻿using BankingData.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace BankingDatabase
+namespace BankingData
 {
     public class ChilinDoContext : DbContext
     {
@@ -14,6 +13,7 @@ namespace BankingDatabase
         public DbSet<AccountInfo> AccountInfos { get; set; }
         public DbSet<AccountDetail> AccountDetails { get; set; }
         public DbSet<TransactionHistory> TransactionHistories { get; set; }
+        public DbSet<SystemLog> SystemLogs { get; set; }
 
         #region Create init data
 

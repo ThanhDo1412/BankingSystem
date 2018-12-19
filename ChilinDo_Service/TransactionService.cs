@@ -1,12 +1,10 @@
-﻿using System;
-using BankingData.Data;
+﻿using BankingData.Data;
+using BankingData.Entity;
 using BankingData.Helper;
 using BankingData.UnitOfWork;
-using BankingDatabase.Entity;
-using BankingDatabase.ViewModel;
 using BankingService.Interface;
+using BankingService.ViewModel;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,6 +32,9 @@ namespace BankingService
 
         public async Task<TransactionBaseResponse> Deposit(TransactionBaseRequest request)
         {
+            //make sure amount is positive
+
+
             //Check account valid
             var account = (await _uow.AccountInfoRepo.FindByConditionAsync(x => x.Id == request.AccountNumber && !x.IsDeleted)).FirstOrDefault();
 
@@ -78,6 +79,9 @@ namespace BankingService
 
         public async Task<TransactionBaseResponse> Withdraw(TransactionBaseRequest request)
         {
+            //make sure amount is positive
+
+
             //Check account valid
             var account = (await _uow.AccountInfoRepo.FindByConditionAsync(x => x.Id == request.AccountNumber && !x.IsDeleted)).FirstOrDefault();
 

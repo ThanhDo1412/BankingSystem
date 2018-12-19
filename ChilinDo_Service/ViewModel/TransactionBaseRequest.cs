@@ -1,4 +1,4 @@
-﻿namespace BankingDatabase.ViewModel
+﻿namespace BankingService.ViewModel
 {
     public class TransactionBaseRequest
     {

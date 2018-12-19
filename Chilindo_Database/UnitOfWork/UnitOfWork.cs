@@ -1,5 +1,5 @@
-﻿using BankingDatabase;
-using BankingDatabase.Entity;
+﻿using BankingData;
+using BankingData.Entity;
 using System.Threading.Tasks;
 
 namespace BankingData.UnitOfWork

@@ -3,8 +3,8 @@ using System.Data;
 using System.Threading.Tasks;
 using BankingData.Data;
 using BankingData.Helper;
-using BankingDatabase.ViewModel;
 using BankingService.Interface;
+using BankingService.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -33,7 +33,7 @@ namespace BankingApi.Middleware
 
         private Task HandleExceptionAsync(HttpContext context, Exception exception, ITransactionService transactionService)
         {
-            var respone = new TransactionBaseResponse
+            var response = new TransactionBaseResponse
             {
                 Successful = false
             };
@@ -43,26 +43,26 @@ namespace BankingApi.Middleware
             {
                 //Custom error showing to user
                 case CustomException e:
-                    respone.Message = e.ErrorMessage;
-                    respone.AccountNumber = e.AccountNumber;
+                    response.Message = e.ErrorMessage;
+                    response.AccountNumber = e.AccountNumber;
                     break;
                 case DBConcurrencyException e:
                     accountNumber = context.Session.GetInt32("AccountNumber") ?? 0;
-                    respone.AccountNumber = accountNumber;
-                    respone.Message = ErrorCode.E2.GetDisplayAttribute().Name;
+                    response.AccountNumber = accountNumber;
+                    response.Message = ErrorCode.E2.GetDisplayAttribute().Name;
                     break;
                 //Exception by system
                 default:
                     accountNumber = context.Session.GetInt32("AccountNumber") ?? 0;
-                    respone.AccountNumber = accountNumber;
-                    respone.Message = ErrorCode.E1.GetDisplayAttribute().Name;
+                    response.AccountNumber = accountNumber;
+                    response.Message = ErrorCode.E0.GetDisplayAttribute().Name;
                     break;
             }
 
-            transactionService.InsertTransaction(respone);
+            transactionService.InsertTransaction(response);
             context.Response.ContentType = "application/json";
 
-            return context.Response.WriteAsync(JsonConvert.SerializeObject(respone));
+            return context.Response.WriteAsync(JsonConvert.SerializeObject(response));
         }
     }
 }

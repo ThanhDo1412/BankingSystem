@@ -1,7 +1,7 @@
 ﻿using System;
 using BankingApi.Middleware;
 using BankingData.UnitOfWork;
-using BankingDatabase;
+using BankingData;
 using BankingService;
 using BankingService.Interface;
 using Microsoft.AspNetCore.Builder;

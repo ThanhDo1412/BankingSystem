@@ -1,11 +1,8 @@
-﻿using System;
-using BankingDatabase.ViewModel;
-using BankingService.Interface;
+﻿using BankingService.Interface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using BankingData.Data;
-using BankingData.Helper;
-using Microsoft.AspNetCore.Http;
+using BankingService.ViewModel;
 
 namespace BankingApi.Controllers
 {

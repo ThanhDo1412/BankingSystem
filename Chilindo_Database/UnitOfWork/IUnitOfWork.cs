@@ -1,4 +1,4 @@
-﻿using BankingDatabase.Entity;
+﻿using BankingData.Entity;
 using System.Threading.Tasks;
 
 namespace BankingData.UnitOfWork

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BankingDatabase.Entity
+namespace BankingData.Entity
 {
     public class AccountDetail
     {

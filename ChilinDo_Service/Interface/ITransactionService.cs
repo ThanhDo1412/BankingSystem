@@ -1,4 +1,4 @@
-﻿using BankingDatabase.ViewModel;
+﻿using BankingService.ViewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
