@@ -57,13 +57,6 @@ namespace BankingClient
                 {
                     using (var jsonReader = new JsonTextReader(streamReader))
                     {
-                        if (response.StatusCode == HttpStatusCode.InternalServerError)
-                        {
-                            var objError = _jsonSerializer.Deserialize<IDictionary<string, string>>(jsonReader);
-                            var message = objError.ContainsKey("error") ? objError["error"] : "Can't get data from API Core.";
-                            Console.WriteLine(message);
-                        }
-
                         return response.StatusCode == HttpStatusCode.OK ? _jsonSerializer.Deserialize<TResponse>(jsonReader) : default(TResponse);
                     }
                 }
@@ -88,12 +81,13 @@ namespace BankingClient
 
         private HttpClient BuildHttpClient(string apiUrl)
         {
-            var handler = new HttpClientHandler
-            {
-                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-            };
+            //var handler = new HttpClientHandler
+            //{
+            //    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            //};
 
-            var httpClientInstance = new HttpClient(handler)
+            //var httpClientInstance = new HttpClient(handler)
+            var httpClientInstance = new HttpClient()
             {
                 BaseAddress = new Uri(apiUrl),
                 Timeout = TimeSpan.FromMinutes(5)

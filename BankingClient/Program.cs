@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BankingService.ViewModel;
@@ -18,7 +19,8 @@ namespace BankingClient
                 Console.WriteLine("1. Check Balance");
                 Console.WriteLine("2. Deposit");
                 Console.WriteLine("3. Withdraw");
-                Console.WriteLine("4. Exit program");
+                Console.WriteLine("4. Test conccurrency with 4 requests for each deposit and withdraw");
+                Console.WriteLine("5. Exit program");
                 var stringKey = Console.ReadLine();
                 if (int.TryParse(stringKey, out key) && key > 0 && key < 5)
                 {
@@ -34,6 +36,9 @@ namespace BankingClient
                             Withdraw().Wait();
                             break;
                         case 4:
+                            TestConcurrency().Wait();
+                            break;
+                        case 5:
                             Environment.Exit(0);
                             break;
                     }
@@ -118,6 +123,41 @@ namespace BankingClient
                     input = Console.ReadLine();
                 }
             }
+        }
+
+        public async static Task TestConcurrency()
+        {
+            var client = new httpClientSerive();
+            var tasks = new List<Task<TransactionBaseResponse>>();
+
+            var beforeBalance = await client.GetBalance(1);
+            Console.WriteLine("balance before run:" + beforeBalance);
+
+            for (int i = 1; i < 5; i++)
+            {
+                tasks.Add(TestDeposit(new TransactionBaseRequest(1, i * 100, "USD")));
+                tasks.Add(TestWithdraw(new TransactionBaseRequest(1, i * 50, "USD")));
+            }
+
+            await Task.WhenAll(tasks);
+            var afterBalance = await client.GetBalance(1);
+            Console.WriteLine("balance after run:" + afterBalance);
+        }
+
+        private async static Task<TransactionBaseResponse> TestWithdraw(TransactionBaseRequest request)
+        {
+            var client = new httpClientSerive();
+            var response = await client.PostWithdraw(request);
+            Console.WriteLine("Withdraw result: " + JsonConvert.SerializeObject(response));
+            return response;
+        }
+
+        private async static Task<TransactionBaseResponse> TestDeposit(TransactionBaseRequest request)
+        {
+            var client = new httpClientSerive();
+            var response = await client.PostDeposit(request);
+            Console.WriteLine("Deposit result: " + JsonConvert.SerializeObject(response));
+            return response;
         }
     }
 }
