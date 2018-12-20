@@ -38,6 +38,7 @@ namespace BankingClient
                             break;
                     }
                 }
+                Console.WriteLine("----------------------------------------------------");
             }
         }
 

@@ -9,8 +9,8 @@ namespace BankingClient
 {
     public class CheckBalanceResponse
     {
-        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
-        public List<TransactionBaseResponse> items { get; set; }
+        [JsonConverter(typeof(SingleOrArrayConverter<TransactionBaseResponse>))]
+        public List<TransactionBaseResponse> Item { get; set; }
     }
 
     class SingleOrArrayConverter<T> : JsonConverter
