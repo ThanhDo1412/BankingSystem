@@ -20,6 +20,8 @@ namespace BankingData.Data
         [Display(Name = "Account Number can not be negative")]
         E5,
         [Display(Name = "Amount can not be negative")]
-        E6
+        E6,
+        [Display(Name = "Currency can not be null or empty")]
+        E7
     }
 }

@@ -54,7 +54,7 @@ namespace BankingClient
                 {
                     var result = await client.GetBalance(accountNumber);
                     Console.WriteLine("Resutl:");
-                    Console.WriteLine(JsonConvert.SerializeObject(result));
+                    Console.WriteLine(result);
                     break;
                 }
                 else
@@ -70,7 +70,6 @@ namespace BankingClient
             var client = new httpClientSerive();
             var accountNumber = 0;
             decimal amount = 0;
-            var currency = string.Empty;
             Console.WriteLine("Please input information as format: \"acount number - amount - currency\"");
             var input = Console.ReadLine();
             while (true)
@@ -80,7 +79,9 @@ namespace BankingClient
                     && int.TryParse(items[0], out accountNumber)
                     && decimal.TryParse(items[1], out amount))
                 {
-                    await client.PostDeposit(new TransactionBaseRequest(accountNumber, amount, currency));
+                    var result = await client.PostDeposit(new TransactionBaseRequest(accountNumber, amount, items[2]));
+                    Console.WriteLine("Result:");
+                    Console.WriteLine(JsonConvert.SerializeObject(result));
                     break;
                 }
                 else
@@ -96,7 +97,6 @@ namespace BankingClient
             var client = new httpClientSerive();
             var accountNumber = 0;
             decimal amount = 0;
-            var currency = string.Empty;
             Console.WriteLine("Please input information as format: \"acount number - amount - currency\"");
             var input = Console.ReadLine();
             while (true)
@@ -106,8 +106,11 @@ namespace BankingClient
                     && int.TryParse(items[0], out accountNumber)
                     && decimal.TryParse(items[1], out amount))
                 {
-                    await client.PostWithdraw(new TransactionBaseRequest(accountNumber, amount, currency));
+                    var result = await client.PostWithdraw(new TransactionBaseRequest(accountNumber, amount, items[2]));
+                    Console.WriteLine("Result:");
+                    Console.WriteLine(JsonConvert.SerializeObject(result));
                     break;
+
                 }
                 else
                 {

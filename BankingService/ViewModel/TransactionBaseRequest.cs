@@ -26,6 +26,10 @@ namespace BankingService.ViewModel
             {
                 throw new CustomException(ErrorCode.E6, AccountNumber);
             }
+            else if (string.IsNullOrWhiteSpace(Currency))
+            {
+                throw new CustomException(ErrorCode.E7, AccountNumber);
+            }
         }
     }
 }

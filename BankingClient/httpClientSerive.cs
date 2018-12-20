@@ -16,9 +16,9 @@ namespace BankingClient
         private readonly string _apiUrl = @"http://localhost:5026/api/";
         private readonly JsonSerializer _jsonSerializer = new JsonSerializer();
 
-        public async Task<CheckBalanceResponse> GetBalance(int accountNumber)
+        public async Task<string> GetBalance(int accountNumber)
         {
-            return await GetAsync<CheckBalanceResponse>($"account/balance/{accountNumber}");
+            return await GetAsync($"account/balance/{accountNumber}");
         }
 
         public async Task<TransactionBaseResponse> PostDeposit(TransactionBaseRequest request)
@@ -34,28 +34,12 @@ namespace BankingClient
 
         #region Private function
 
-        private async Task<TResponse> GetAsync<TResponse>(string requestUrl, HttpContent content = null)
+        private async Task<string> GetAsync(string requestUrl, HttpContent content = null)
         {
             if (content == null) content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
             var response = await SendAsync(HttpMethod.Get, requestUrl, content);
 
-            using (var stream = await response.Content.ReadAsStreamAsync())
-            {
-                using (var streamReader = new StreamReader(stream))
-                {
-                    using (var jsonReader = new JsonTextReader(streamReader))
-                    {
-                        if (response.StatusCode == HttpStatusCode.InternalServerError)
-                        {
-                            var objError = _jsonSerializer.Deserialize<IDictionary<string, string>>(jsonReader);
-                            var message = objError != null && objError.ContainsKey("error") ? objError["error"] : "Can't get data from API Core.";
-                            Console.WriteLine(message);
-                        }
-
-                        return response.StatusCode == HttpStatusCode.OK ? _jsonSerializer.Deserialize<TResponse>(jsonReader) : default(TResponse);
-                    }
-                }
-            }
+            return await response.Content.ReadAsStringAsync();
         }
 
         private async Task<TResponse> PostAsync<TRequest, TResponse>(string requestUrl, TRequest request)

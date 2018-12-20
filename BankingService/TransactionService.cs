@@ -20,6 +20,10 @@ namespace BankingService
 
         public async Task<ICollection<TransactionBaseResponse>> GetBalance(int accountNumber)
         {
+            if (accountNumber < 0)
+            {
+                throw new CustomException(ErrorCode.E5, accountNumber);
+            }
             return (await _uow.AccountDetailRepo.FindByConditionAsync(x => x.AcountInfoId == accountNumber && !x.IsDeleted))
                 .Select(x => new TransactionBaseResponse
                 {
