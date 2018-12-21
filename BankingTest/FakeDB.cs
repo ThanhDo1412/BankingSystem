@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using BankingData;
+﻿using BankingData;
 using BankingData.Entity;
 
 namespace BankingTest

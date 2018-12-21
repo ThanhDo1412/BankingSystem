@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BankingData.Data
 {
@@ -11,7 +8,7 @@ namespace BankingData.Data
         E0,
         [Display(Name = "The Balance is not enough for withdrawal")]
         E1,
-        [Display(Name = "This balance is changed, please proccess again")]
+        [Display(Name = "This balance is changed, please process again")]
         E2,
         [Display(Name = "Account number does not existed")]
         E3,

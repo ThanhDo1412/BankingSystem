@@ -6,6 +6,7 @@ using BankingData.Helper;
 using BankingService.Interface;
 using BankingService.ViewModel;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -47,7 +48,7 @@ namespace BankingApi.Middleware
                     response.Message = e.ErrorMessage;
                     response.AccountNumber = e.AccountNumber;
                     break;
-                case DBConcurrencyException e:
+                case DbUpdateConcurrencyException e:
                     accountNumber = context.Session.GetInt32("AccountNumber") ?? 0;
                     response.AccountNumber = accountNumber;
                     response.Message = ErrorCode.E2.GetDisplayAttribute().Name;
@@ -57,11 +58,14 @@ namespace BankingApi.Middleware
                     accountNumber = context.Session.GetInt32("AccountNumber") ?? 0;
                     response.AccountNumber = accountNumber;
                     response.Message = ErrorCode.E0.GetDisplayAttribute().Name;
-                    Log.Error(exception, string.Empty, accountNumber);
+                    
                     break;
             }
-
-            transactionService.InsertTransaction(response);
+            Log.Error(exception.Message, string.Empty, accountNumber);
+            if (exception.InnerException != null)
+            {
+                Log.Error(exception.InnerException.Message, string.Empty, accountNumber);
+            }
             context.Response.ContentType = "application/json";
 
             return context.Response.WriteAsync(JsonConvert.SerializeObject(response));

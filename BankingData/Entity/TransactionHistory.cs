@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankingData.Entity
@@ -13,5 +14,6 @@ namespace BankingData.Entity
         public string Currency { get; set; }
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
+        public DateTime InsAt { get; set; }
     }
 }

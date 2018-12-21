@@ -67,7 +67,7 @@ namespace BankingService
                 _uow.AccountDetailRepo.Create(accountDetail);
             }
 
-            InsertTransaction(request);
+            InsertTransaction(request, Contanst.Message.DepositSucceeded);
 
             await _uow.SaveAsyn();
 
@@ -109,7 +109,7 @@ namespace BankingService
             accountDetail.Balance -= request.Amount;
             _uow.AccountDetailRepo.Update(accountDetail);
 
-            InsertTransaction(request);
+            InsertTransaction(request, Contanst.Message.WithdrawSucceeded);
 
             await _uow.SaveAsyn();
 
@@ -123,14 +123,15 @@ namespace BankingService
             };
         }
 
-        public void InsertTransaction(TransactionBaseRequest request)
+        public void InsertTransaction(TransactionBaseRequest request, string message)
         {
             var transaction = new TransactionHistory
             {
                 AccountId = request.AccountNumber,
                 Amount = request.Amount,
                 Currency = request.Currency,
-                IsSuccess = true
+                IsSuccess = true,
+                Message = message
             };
             _uow.TransactionHistoryRepo.Create(transaction);
         }

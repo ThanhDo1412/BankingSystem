@@ -4,14 +4,16 @@ using BankingData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BankingData.Migrations
 {
     [DbContext(typeof(ChilinDoContext))]
-    partial class ChilinDoContextModelSnapshot : ModelSnapshot
+    [Migration("20181221074147_AddColumnInsAtToTransactionHistory")]
+    partial class AddColumnInsAtToTransactionHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,11 +120,11 @@ namespace BankingData.Migrations
                     b.ToTable("TransactionHistories");
 
                     b.HasData(
-                        new { Id = 1, AccountId = 1, Amount = 1000m, Currency = "USD", InsAt = DateTime.Now, IsSuccess = true },
-                        new { Id = 2, AccountId = 1, Amount = 1000m, Currency = "MYR", InsAt = DateTime.Now, IsSuccess = true },
-                        new { Id = 3, AccountId = 2, Amount = 1000000m, Currency = "VND", InsAt = DateTime.Now, IsSuccess = true },
-                        new { Id = 4, AccountId = 2, Amount = 1000000m, Currency = "BAHT", InsAt = DateTime.Now, IsSuccess = true },
-                        new { Id = 5, AccountId = 2, Amount = 3000m, Currency = "USD", InsAt = DateTime.Now, IsSuccess = true }
+                        new { Id = 1, AccountId = 1, Amount = 1000m, Currency = "USD", InsAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), IsSuccess = true },
+                        new { Id = 2, AccountId = 1, Amount = 1000m, Currency = "MYR", InsAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), IsSuccess = true },
+                        new { Id = 3, AccountId = 2, Amount = 1000000m, Currency = "VND", InsAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), IsSuccess = true },
+                        new { Id = 4, AccountId = 2, Amount = 1000000m, Currency = "BAHT", InsAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), IsSuccess = true },
+                        new { Id = 5, AccountId = 2, Amount = 3000m, Currency = "USD", InsAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), IsSuccess = true }
                     );
                 });
 

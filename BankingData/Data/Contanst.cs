@@ -9,6 +9,8 @@ namespace BankingData.Data
         public struct Message
         {
             public static string TransactionSucceeded = "Transaction succeeded";
+            public static string DepositSucceeded = "Deposit succeeded";
+            public static string WithdrawSucceeded = "Withdraw succeeded";
 
         }
     }
