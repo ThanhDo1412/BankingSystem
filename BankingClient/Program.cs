@@ -20,7 +20,6 @@ namespace BankingClient
                 Console.WriteLine("2. Deposit");
                 Console.WriteLine("3. Withdraw");
                 Console.WriteLine("4. Test conccurrency with 4 requests for each deposit and withdraw");
-                Console.WriteLine("5. Exit program");
                 var stringKey = Console.ReadLine();
                 if (int.TryParse(stringKey, out key) && key > 0 && key < 5)
                 {
@@ -37,9 +36,6 @@ namespace BankingClient
                             break;
                         case 4:
                             TestConcurrency().Wait();
-                            break;
-                        case 5:
-                            Environment.Exit(0);
                             break;
                     }
                 }
@@ -137,6 +133,9 @@ namespace BankingClient
             {
                 tasks.Add(TestDeposit(new TransactionBaseRequest(1, i * 100, "USD")));
                 tasks.Add(TestWithdraw(new TransactionBaseRequest(1, i * 50, "USD")));
+
+                tasks.Add(TestDeposit(new TransactionBaseRequest(1, i * 100, "MYR")));
+                tasks.Add(TestWithdraw(new TransactionBaseRequest(1, i * 50, "MYR")));
             }
 
             await Task.WhenAll(tasks);
